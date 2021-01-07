@@ -12,3 +12,5 @@
 10- Change the var mode, two types of model : distilbert (fast), bert (slow)  
 11- In predict, change the last number (here 10) by the length of summary  
 12- Go to cmd and do py test.py
+
+The result is in test/out.txt
