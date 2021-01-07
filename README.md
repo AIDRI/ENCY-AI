@@ -1,4 +1,4 @@
-# Research-assistant
+# ENCY AI
 
 1- Clone the repo  
 2- Go to ENCY/  
