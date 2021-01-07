@@ -4,7 +4,7 @@ from models.model import build_model
 
 print('Loading Model')
 
-model='bert' #
+model='bert' #distilbert
 
 model = build_model(checkpoint=torch.load(f'checkpoints/{model}.pt', map_location='cpu'), bert_type=model, device='cpu')
 
