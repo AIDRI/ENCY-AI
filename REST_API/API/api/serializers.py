@@ -27,7 +27,11 @@ class TextSummarizerSerializer(serializers.ModelSerializer):
         for i in output1:
             output += i
 
-        key_words = word_extraction(output)
+        try:
+            key_words = word_extraction(output)
+        except:
+            key_words = "The keyword extractor doesn't found keywords to output. Try to verify if the sentence is correct, or if the construction is ok !"
+
 
         return {
             'output': output,
