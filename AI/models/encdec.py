@@ -33,16 +33,12 @@ class MultiHeadAttn(nn.Module):
         self.dropout = nn.Dropout(0.1)
         self.final_linear = nn.Linear(dim, dim)
 
-    def forward(self, k, v, q, mask=None,
-                cache=None, type=None):
-
+    def forward(self, k, v, q, mask=None, cache=None, type=None):
         bs = k.size(0)
         hl = self.hl
         hl_n = self.hl_n
         klength = k.size(1)
         qlength = q.size(1)
-
-
         if cache is not None:
             if type == "self":
                 q = self.wq(q)
@@ -69,96 +65,59 @@ class MultiHeadAttn(nn.Module):
             k = shape(self.wk(k), bs, hl_n, hl)
             v = shape(self.wv(v), bs, hl_n, hl)
             q = self.wq(q)
-
         q = shape(q, bs, hl_n, hl)
-
         klength = k.size(2)
         qlength = q.size(2)
-
         q = q / hl**0.5
         scores = torch.matmul(q, k.transpose(2, 3))
         scores = scores.masked_fill(mask.unsqueeze(1).expand_as(scores).byte(), -1e18)
-
         attn = self.softmax(scores)
-
-        if True:
-            tmp = torch.matmul(self.dropout(attn), v)
-            context = tmp.transpose(1, 2).contiguous().view(bs, -1, hl_n * hl)
-            output = self.final_linear(context)
-            return output
-        else:
-            context = torch.matmul(self.dropout(attn), v)
-            return context
+        tmp = torch.matmul(self.dropout(attn), v)
+        context = tmp.transpose(1, 2).contiguous().view(bs, -1, hl_n * hl)
+        output = self.final_linear(context)
+        return output
 
 
-class PositionalEncoding(nn.Module):
-    def __init__(self, dropout, dim, max_len=5000):
-        pe = torch.zeros(max_len, dim)
-        position = torch.arange(0, max_len).unsqueeze(1)
-        div_term = torch.exp((torch.arange(0, dim, 2, dtype=torch.float) * -(math.log(10000.0) / dim)))
+class EncodingPos(nn.Module):
+    def __init__(self, d, n=5000):
+        pe = torch.zeros(n, d)
+        position = torch.arange(0, n).unsqueeze(1)
+        div_term = torch.exp((torch.arange(0, d, 2, dtype=torch.float) * -(math.log(10000.0) / d)))
         pe[:, 0::2] = torch.sin(position.float() * div_term)
         pe[:, 1::2] = torch.cos(position.float() * div_term)
         pe = pe.unsqueeze(0)
         super().__init__()
         self.register_buffer("pe", pe)
-        self.dropout = nn.Dropout(p=dropout)
-        self.dim = dim
-
-    def forward(self, e, ep=None):
-        return self.dropout((e * self.dim**0.5) + self.pe[:, ep][:, None, :])
-
-    def get_emb(self, e):
-        return self.pe[:, : e.size(1)]
 
 
-class TransformerEncoderLayer(nn.Module):
-    def __init__(self, d_model, heads, d_ff, dropout):
+class EncoderLayer(nn.Module):
+    def __init__(self, n, heads, feed_forward_size, dropout=0.25):
         super().__init__()
-
-        self.self_attn = MultiHeadAttn(heads, d_model)
-        self.feed_forward = ForwardPos(d_model, d_ff)
-        self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)
+        self.self_attn = MultiHeadAttn(heads, n)
+        self.ff = ForwardPos(n, feed_forward_size)
+        self.layer_norm = nn.LayerNorm(n, eps=1e-6)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, iter, query, inputs, mask):
-        if iter != 0:
-            input_norm = self.layer_norm(inputs)
-        else:
-            input_norm = inputs
-
-        mask = mask.unsqueeze(1)
-        context = self.self_attn(input_norm, input_norm, input_norm, mask=mask)
-        out = self.dropout(context) + inputs
-        return self.feed_forward(out)
+    def forward(self, i, _input, mask):
+        if i != 0: inputs = self.layer_norm(_input)
+        else: inputs = _input
+        att = self.self_attn(inputs, inputs, inputs, mask=mask.unsqueeze(1))
+        return self.ff(self.dropout(att) + _input)
 
 
 class final_layer(nn.Module):
-    def __init__(self, d_model, d_ff, heads, dropout, num_inter_layers=0):
+    def __init__(self, dm, df, heads, dropout=0.25, n=0):
         super().__init__()
-        self.d_model = d_model
-        self.num_inter_layers = num_inter_layers
-        self.pos_emb = PositionalEncoding(dropout, d_model)
-        self.transformer_inter = nn.ModuleList(
-            [TransformerEncoderLayer(d_model, heads, d_ff, dropout) for _ in range(num_inter_layers)]
-        )
-        self.dropout = nn.Dropout(dropout)
-        self.layer_norm = nn.LayerNorm(d_model, eps=1e-6)
-        self.wo = nn.Linear(d_model, 1, bias=True)
+        self.n = n
+        self.emb = EncodingPos(dm)
+        self.transformer = nn.ModuleList([EncoderLayer(dm, heads, df, dropout) for _ in range(n)])
+        self.layer_norm = nn.LayerNorm(dm, eps=1e-6)
+        self.wo = nn.Linear(dm, 1, bias=True)
         self.sigmoid = nn.Sigmoid()
 
-    def forward(self, top_vecs, mask):
-        """ See :obj:`EncoderBase.forward()`"""
-
-        batch_size, n_sents = top_vecs.size(0), top_vecs.size(1)
-        pos_emb = self.pos_emb.pe[:, :n_sents]
-        x = top_vecs * mask[:, :, None].float()
-        x = x + pos_emb
-
-        for i in range(self.num_inter_layers):
-            x = self.transformer_inter[i](i, x, x, 1 - mask)  # all_sents * max_tokens * dim
-
+    def forward(self, v, mask):
+        _, ns = v.size(0), v.size(1)
+        x = v * mask[:, :, None].float() + self.emb.pe[:, :ns]
+        for i in range(self.n): x = self.transformer[i](i, x, 1 - mask)
         x = self.layer_norm(x)
-        sent_scores = self.sigmoid(self.wo(x))
-        sent_scores = sent_scores.squeeze(-1) * mask.float()
-
-        return sent_scores
+        return self.sigmoid(self.wo(x)).squeeze(-1) * mask.float()

@@ -18,7 +18,7 @@ class build_model(nn.Module):
     def __init__(self, ckpt):
         super().__init__()
         self.distilbert = distilbert()
-        self.final_layer = final_layer(self.distilbert.model.config.hidden_size, d_ff=2048, heads=8, dropout=0.25, num_inter_layers=2)
+        self.final_layer = final_layer(self.distilbert.model.config.hidden_size, df=2048, heads=8, dropout=0.25, n=2)
         self.load_state_dict(ckpt, strict=False)
         self.to('cpu')
 
