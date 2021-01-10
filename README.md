@@ -1,4 +1,4 @@
-# E.N.C.Y.
+# ENCY-AI
 
 ![ENCY_logo](/assets/ency_logo.png)
 
