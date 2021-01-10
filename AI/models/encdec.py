@@ -3,7 +3,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from AI.models.utils import GaussELU, shape
+from AI.models.utils import GaussELU, get_shape
 
 
 class ForwardPos(nn.Module):
@@ -20,7 +20,20 @@ class ForwardPos(nn.Module):
 		out = self.dropout(self.weight2(self.dropout(self.activation(self.weight1(self.normalisation(x)))))) + residual
 		return out
 
-class MultiHeadAttn(nn.Module):
+
+class EncodingPos(nn.Module):
+    def __init__(self, d, n=5000):
+        pe = torch.zeros(n, d)
+        position = torch.arange(0, n).unsqueeze(1)
+        div_term = torch.exp((torch.arange(0, d, 2, dtype=torch.float) * -(math.log(10000.0) / d)))
+        pe[:, 0::2] = torch.sin(position.float() * div_term)
+        pe[:, 1::2] = torch.cos(position.float() * div_term)
+        pe = pe.unsqueeze(0)
+        super().__init__()
+        self.register_buffer("pe", pe)
+
+
+class MultiHeadAttn(nn.Module): #found the base of the multi head attention on github (not totally mine)
     def __init__(self, hl_n, dim):
         self.hl = dim // hl_n
         self.dim = dim
@@ -42,8 +55,8 @@ class MultiHeadAttn(nn.Module):
         if cache is not None:
             if type == "self":
                 q = self.wq(q)
-                k = shape(self.wk(q), bs, hl_n, hl)
-                v = shape(self.wk(q), bs, hl_n, hl)
+                k = get_shape(self.wk(q), bs, hl_n, hl)
+                v = get_shape(self.wk(q), bs, hl_n, hl)
 
                 if cache is not None:
                     if cache["self_keys"] is not None: k = torch.cat((cache["self_keys"].to('cpu'), k), dim=2)
@@ -54,18 +67,18 @@ class MultiHeadAttn(nn.Module):
             elif type == "context":
                 q = self.wq(q)
                 if cache is not None:
-                    if cache["memory_keys"] is None: k = shape(self.wk(k), bs, hl_n, hl); v = shape(self.wv(v), bs, hl_n, hl)
+                    if cache["memory_keys"] is None: k = get_shape(self.wk(k), bs, hl_n, hl); v = shape(self.wv(v), bs, hl_n, hl)
                     else: k, v = cache["memory_keys"], cache["memory_values"]
                     cache["memory_keys"] = k
                     cache["memory_values"] = v
                 else:
-                    k = shape(self.wk(k), bs, hl_n, hl)
-                    v = shape(self.wv(v), bs, hl_n, hl)
+                    k = get_shape(self.wk(k), bs, hl_n, hl)
+                    v = get_shape(self.wv(v), bs, hl_n, hl)
         else:
-            k = shape(self.wk(k), bs, hl_n, hl)
-            v = shape(self.wv(v), bs, hl_n, hl)
+            k = get_shape(self.wk(k), bs, hl_n, hl)
+            v = get_shape(self.wv(v), bs, hl_n, hl)
             q = self.wq(q)
-        q = shape(q, bs, hl_n, hl)
+        q = get_shape(q, bs, hl_n, hl)
         klength = k.size(2)
         qlength = q.size(2)
         q = q / hl**0.5
@@ -76,18 +89,6 @@ class MultiHeadAttn(nn.Module):
         context = tmp.transpose(1, 2).contiguous().view(bs, -1, hl_n * hl)
         output = self.final_linear(context)
         return output
-
-
-class EncodingPos(nn.Module):
-    def __init__(self, d, n=5000):
-        pe = torch.zeros(n, d)
-        position = torch.arange(0, n).unsqueeze(1)
-        div_term = torch.exp((torch.arange(0, d, 2, dtype=torch.float) * -(math.log(10000.0) / d)))
-        pe[:, 0::2] = torch.sin(position.float() * div_term)
-        pe[:, 1::2] = torch.cos(position.float() * div_term)
-        pe = pe.unsqueeze(0)
-        super().__init__()
-        self.register_buffer("pe", pe)
 
 
 class EncoderLayer(nn.Module):
