@@ -3,8 +3,6 @@ sentence_transformers
 nltk==3.5
 sklearn
 transformers==4.1.1
-django
-djangorestframework
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.6.0+cpu
 torchvision==0.7.0+cpu

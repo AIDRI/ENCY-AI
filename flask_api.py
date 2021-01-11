@@ -29,9 +29,7 @@ def index():
 	model = load_model(MODEL_FILE_NAME)
 
 	doc = request.form['text']
-	output = prediction(doc, 2)
-	#words = word_extraction(output[0])
-	#article = search_on_wikipedia(words)
+	output = prediction(doc, 5) #length
 
 	out = {"output":output}
 	return json.dumps(out)
