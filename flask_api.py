@@ -30,13 +30,10 @@ def index():
 
 	doc = request.form['text']
 	output = prediction(doc, 2)
-	words = word_extraction(output[0])
-	article = search_on_wikipedia(words)
+	#words = word_extraction(output[0])
+	#article = search_on_wikipedia(words)
 
-	out = {"output":output,
-		"words":words,
-		"articles":article
-	}
+	out = {"output":output}
 	return json.dumps(out)
 
 
