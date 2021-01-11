@@ -2,8 +2,6 @@ from flask import Flask, request, json, render_template
 import boto3
 import torch
 from AI.test import prediction
-from AI.models.word_extraction import word_extraction
-from AI.wiki import search_on_wikipedia
 import io
 
 BUCKET_NAME = "ency-ai"
