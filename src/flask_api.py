@@ -11,11 +11,11 @@ app = Flask(__name__)
 
 S3 = boto3.client('s3')
 
-
+"""
 def load_model(key):
 	if not os.path.exists('AI\\checkpoints\\distilbert.pt'):
 		S3.download_file(BUCKET_NAME, key, 'AI\\checkpoints\\distilbert.pt')
-
+"""
 
 @app.route('/')
 def my_form():
@@ -25,7 +25,8 @@ def my_form():
 @app.route('/', methods=['GET', 'POST'])
 def index():
 	doc = request.form['text']
-	output = prediction(doc, 10) #length
+	length = request.form['length']
+	output = prediction(doc, length) #length
 
 	out = {"output":output}
 	return json.dumps(out)

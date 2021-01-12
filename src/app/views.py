@@ -22,11 +22,14 @@ def index():
 
 	if "text" not in request.json:
 		return { "error": "No text field in json body" }
+	if "length" not in request.json:
+		return { "error": "No length field in json body"}
 
 	print("TEST")
 	doc = request.json['text']
+	length = request.json['length']
 
-	output = prediction(doc, 5) #length
+	output = prediction(doc, length) #length
 
 	out = {"output":output}
 	return out
