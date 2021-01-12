@@ -45,7 +45,7 @@ def load_text(processed_text, max_pos):
     src, mask_src, segments_ids, clss, mask_cls = _process_src(processed_text)
     segs = torch.tensor(segments_ids)[None, :].to('cpu')
     src_text = [[sent.replace("[SEP]", "").strip() for sent in processed_text.split("[CLS]")]]
-    return src, mask_src, clss, mask_cls, src_text
+    return src, mask_src, segs, clss, mask_cls, src_text
 
 
 def predict(model, input_data, max_length):
@@ -66,8 +66,8 @@ def predict(model, input_data, max_length):
         return False
 
     with torch.no_grad():
-        src, mask, clss, mask_cls, src_str = input_data
-        sent_scores, mask = model(src, clss, mask, mask_cls)
+        src, mask, segs, clss, mask_cls, src_str = input_data
+        sent_scores, mask = model(src, segs, clss, mask, mask_cls)
         sent_scores = sent_scores + mask.float()
         sent_scores = sent_scores.cpu().data.numpy()
         selected_ids = np.argsort(-sent_scores, 1)
