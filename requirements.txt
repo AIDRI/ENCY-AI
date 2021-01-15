@@ -1,7 +1,5 @@
 nltk==3.5
 transformers==4.1.1
---find-links https://download.pytorch.org/whl/torch_stable.html
-torch==1.6.0+cpu
 flask
 boto3
 certifi==2020.12.5
@@ -27,6 +25,10 @@ tokenizers==0.9.4
 tqdm==4.56.0
 urllib3==1.26.2
 Werkzeug==1.0.1
+
+# Scraping
+beautifulsoup4==4.9.3
+requests==2.25.1
 
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.6.0+cpu
