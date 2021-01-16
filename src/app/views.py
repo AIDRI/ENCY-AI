@@ -2,11 +2,12 @@ from app import app
 from flask import request
 # import boto3
 from AI.test import prediction
+from AI.word_extraction import word_extraction
+from AI.wiki import search_on_wikipedia
 from scrapper.main import get_scrapped_content
 
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
-
 
 
 @app.route('/summary', methods=['GET', 'POST'])
@@ -23,9 +24,15 @@ def summary():
 
 	doc = request.json['text']
 	
-	output = prediction(doc, length) #length
+	output = prediction(doc, length)
+	keywords = word_extraction(str(output))
+	recommended_articles = search_on_wikipedia(keywords)
 
-	out = {"output":output}
+	out = {
+			"output": output, 
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
 	return out
 
 
@@ -48,8 +55,14 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
+	keywords = word_extraction(str(output))
+	recommended_articles = search_on_wikipedia(keywords)
 
-	out = {"output":output}
+	out = {
+			"output": output, 
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
 	return out
 
 if __name__ == "__main__":

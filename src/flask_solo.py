@@ -1,5 +1,7 @@
 from flask import Flask, request
 from AI.test import prediction
+from AI.word_extraction import word_extraction
+from AI.wiki import search_on_wikipedia
 
 app = Flask(__name__)
 
@@ -17,9 +19,14 @@ def summary():
 
 	doc = request.json['text']
 	
-	output = prediction(doc, length) #length
-
-	out = {"output":output}
+	output = prediction(doc, length)
+	keywords = word_extraction(str(output))
+	recommended_articles = search_on_wikipedia(keywords)
+	out = {
+			"output": output, 
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
 	return out
 
 
