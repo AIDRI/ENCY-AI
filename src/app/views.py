@@ -4,10 +4,30 @@ from flask import request
 from AI.test import prediction
 from AI.word_extraction import word_extraction
 from AI.wiki import search_on_wikipedia
-from scrapper.main import get_scrapped_content
+from scrapper.data_scrapper import data_scrapping
+from va.chatter import chatter
 
+"""
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
+"""
+
+
+@app.route('/chatter', methods=['GET', 'POST'])
+def chatter():
+	if not request.json:
+		return { "error": "No json body found in request" }
+
+	if "text" not in request.json:
+		return { "error": "field text not found. Expected string" }
+
+	doc = request.json['text']
+	
+	output = chatter(doc)
+	out = {
+			"output": output
+		  }
+	return out
 
 
 @app.route('/summary', methods=['GET', 'POST'])
@@ -50,7 +70,7 @@ def summarise_url():
 	if "length" in request.json:
 		length = request.json['length']
 
-	scrapped_data = get_scrapped_content(url)
+	scrapped_data = data_scrapping(url)
 	if "error" in scrapped_data:
 		return {"error": "Website does not allow scrapping"}
 

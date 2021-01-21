@@ -1,0 +1,101 @@
+{
+  "intents": [
+    {
+      "tag": "greet",
+      "patterns": [
+        "Hey",
+        "Hello",
+        "Hi",
+        "Hola",
+        "Hello I'm",
+        "Hello I am",
+        "Good to see you",
+        "Elo",
+        "Ello",
+        "Hi all"
+      ],
+      "responses": [
+        "Hey, Ency here, I'm your personal assistant for researches!",
+        "Good to see you researcher! Hope you find good resources today",
+        "Hey buddy, It's Ency here!",
+        "Glad to see you back dude !"
+      ]
+    },
+    {
+      "tag": "help",
+      "patterns": [
+        "Help",
+        "What is",
+        "How to",
+        "welp",
+        "I can't",
+        "I cant",
+        "What",
+        "How to research",
+        "How to create a new project",
+        "What can you do",
+        "I m stuck",
+        "I am stuck"
+      ],
+      "responses": ["<some help stuff>"]
+    },
+    {
+      "tag": "introduce",
+      "patterns": [
+        "Who are you",
+        "What is",
+        "Name",
+        "Ency",
+        "I don't know you",
+        "What is your name",
+        "Who are you",
+        "Who is ency"
+      ],
+      "responses": [
+        "Hey, I'm Ency. I get your researches done with my AI powers whether for your next million dollar project or a blog.",
+        "I am Ency, your favorite virtual assistant ! I am here to help you to summarize some texts and articles !"
+      ]
+    },
+    {
+      "tag": "feedback",
+      "patterns": [
+        "Not working",
+        "Stopped working",
+        "Cant save",
+        "Couldn't save",
+        "Cant delete",
+        "Couldn't delete",
+        "Lag",
+        "Slow",
+        "Bug",
+        "Feedback",
+        "I want to write to your owners",
+        "I want to give feedback"
+      ],
+      "responses": [
+        "Hey you can write about it to my creators! at <email> or just leave your message below.",
+        "You find a bug, or you just want to give your opinion ! Go ahead and tell the team coffee at <email>"
+      ]
+    },
+    {
+      "tag": "bye",
+      "patterns": [ "Bye", "Goodbye", "Cya", "I am leaving", "See you later", "I need to go" ],
+      "responses": [
+        "Nice talk! bye.",
+        "Hope to see you back researcher!",
+        "Hope you come back buddy!",
+        "Goodbye, have a wonderfull day!",
+        "It's been such a nice time with you, bye."
+      ]
+    },
+    {
+      "tag": "creators",
+      "patterns": [ "Who is your creators", "who create you ?", "creators", "conception" ],
+      "responses": [
+        "Team Coffee create Ency !",
+        "No one create me, I'm human like you... bip... boup !",
+        "I was made by Team Coffee during the Timathon#3"
+      ]
+    }
+  ]
+}
