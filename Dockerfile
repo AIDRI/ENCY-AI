@@ -6,4 +6,4 @@ COPY ./requirements.txt /var/www/requirements.txt
 RUN pip install -r /var/www/requirements.txt
 
 COPY src /app
-COPY ./tokenizers /root/nltk_data/tokenizers
+COPY ./scripts/tokenizers /root/nltk_data/tokenizers

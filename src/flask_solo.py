@@ -21,7 +21,7 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	keywords = word_extraction(doc)
+	keywords = word_extraction(output)
 	recommended_articles = search_on_wikipedia(keywords)
 	out = {
 			"output": output, 
