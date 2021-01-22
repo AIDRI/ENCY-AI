@@ -14,7 +14,7 @@ MODEL_FILE_NAME = "distilbert.pt"
 
 
 @app.route('/chatter', methods=['GET', 'POST'])
-def chatter():
+def chatterReq():
 	if not request.json:
 		return { "error": "No json body found in request" }
 
@@ -45,13 +45,13 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	keywords = word_extraction(str(output))
-	recommended_articles = search_on_wikipedia(keywords)
+	# keywords = word_extraction(str(output))
+	# recommended_articles = search_on_wikipedia(keywords)
 
 	out = {
 			"output": output, 
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
+			# "keywords": keywords,
+			# "recommended_articles": recommended_articles
 		  }
 	return out
 

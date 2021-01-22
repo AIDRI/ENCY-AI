@@ -3,8 +3,26 @@ from AI.test import prediction
 from AI.word_extraction import word_extraction
 from AI.wiki import search_on_wikipedia
 from scrapper.data_scrapper import data_scrapping
-
+from va.chatter import chatter
 app = Flask(__name__)
+
+
+@app.route('/chatter', methods=['GET', 'POST'])
+def chatterReq():
+	if not request.json:
+		return { "error": "No json body found in request" }
+
+	if "text" not in request.json:
+		return { "error": "field text not found. Expected string" }
+
+	doc = request.json['text']
+	
+	output = chatter(doc)
+	out = {
+			"output": output
+		  }
+	return out
+
 
 @app.route('/summary', methods=['GET', 'POST'])
 def summary():
