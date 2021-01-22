@@ -28,6 +28,6 @@ Werkzeug==1.0.1
 wikipedia
 sentence_transformers
 sklearn
-newspaper
+newspaper3k
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.6.0+cpu
