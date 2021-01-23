@@ -6,6 +6,15 @@ from AI.word_extraction import word_extraction
 from AI.wiki import search_on_wikipedia
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
+from os import getenv
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+api_key = getenv('API_SECRET_KEY', None)
+assert api_key
+
 
 """
 BUCKET_NAME = "ency-ai"
@@ -20,6 +29,9 @@ def chatterReq():
 
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
+
+	if request.headers.get('X-API-KEY') != api_key:
+		return { "error" : "Invalid API Key included." }	
 
 	doc = request.json['text']
 	
@@ -37,6 +49,9 @@ def summary():
 
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
+
+	if request.headers.get('X-API-KEY') != api_key:
+		return { "error" : "Invalid API Key included." }	
 
 	length = 5
 	if "length" in request.json:
@@ -73,6 +88,9 @@ def summarise_url():
 	scrapped_data = data_scrapping(url)
 	if "error" in scrapped_data:
 		return {"error": "Website does not allow scrapping"}
+
+	if request.headers.get('X-API-KEY') != api_key:
+		return { "error" : "Invalid API Key included." }	
 
 	output = prediction(scrapped_data["output"], length) #length
 	keywords = word_extraction(str(output))
