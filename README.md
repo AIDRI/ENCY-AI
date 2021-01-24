@@ -8,7 +8,7 @@ This project was realized within the framework of the Timathon #3. The theme of 
 We had one month to design our Artificial Intelligence, the API, as well as the front-end part of the project.  
 The project was realized by Team Coffee.  
 We divided into several teams to be able to realize this project:  
-- Team Artificial Intelligence: AIDRI, Antolaga  
+- Team Artificial Intelligence: AIDRI  
 - Team REST API: Aineas  
 - Team Front-End :  
 - Team UI/UX :  
@@ -58,7 +58,7 @@ BERT uses the Transformer, an attention mechanism that learns contextual relatio
 If you use our API in your project, please cite us as :  
 {  
 &nbsp;&nbsp;title : "E.N.C.Y."  
-&nbsp;&nbsp;author : "Adrien I, Antonin L, ..."  
+&nbsp;&nbsp;author : "Adrien I, ..."  
 &nbsp;&nbsp;date : "1/7/2021"  
 &nbsp;&nbsp;adress : "online"  
 &nbsp;&nbsp;url : "https://github.com/AIDRI/ENCY/"  
