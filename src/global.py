@@ -1,8 +1,8 @@
 import wikipedia
 # import boto3
 
-from flask import request
-from app import app
+from flask import request, Flask
+app = Flask(__name__)
 
 from AI.test import prediction
 from AI.word_extraction import word_extraction
