@@ -31,5 +31,6 @@ sentence_transformers
 sklearn
 newspaper3k
 yake
+googletrans==3.1.0a0
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torch==1.6.0+cpu
