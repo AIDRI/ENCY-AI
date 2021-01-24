@@ -1,36 +1,12 @@
-from app import app
-from flask import request
-# import boto3
+from flask import Flask, request
 from AI.test import prediction
 from AI.word_extraction import word_extraction
 from AI.wiki import search_on_wikipedia
 from scrapper.data_scrapper import data_scrapping
-from va.chatter import chatter
 
-"""
-BUCKET_NAME = "ency-ai"
-MODEL_FILE_NAME = "distilbert.pt"
-"""
+app = Flask(__name__)
 
-
-@app.route('/chatter', methods=['POST'])
-def chatterReq():
-	if not request.json:
-		return { "error": "No json body found in request" }
-
-	if "text" not in request.json:
-		return { "error": "field text not found. Expected string" }
-
-	doc = request.json['text']
-	
-	output = chatter(doc)
-	out = {
-			"output": output
-		  }
-	return out
-
-
-@app.route('/summary', methods=['POST'])
+@app.route('/summary', methods=['GET', 'POST'])
 def summary():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -45,9 +21,8 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	keywords = word_extraction(str(output))
+	keywords = word_extraction(output)
 	recommended_articles = search_on_wikipedia(keywords)
-
 	out = {
 			"output": output, 
 			"keywords": keywords,
@@ -55,8 +30,7 @@ def summary():
 		  }
 	return out
 
-
-@app.route('/summarise-url', methods=["POST"])
+@app.route('/summarise-url')
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -84,6 +58,7 @@ def summarise_url():
 			"recommended_articles": recommended_articles
 		  }
 	return out
+
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True, port=80)
