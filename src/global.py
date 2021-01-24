@@ -29,25 +29,26 @@ def aiTips():
 	doc = doc.replace('_', ' ')
 	out = {}
 	for word in doc.split():
-		definition, lang = get_def(word)
-		wikipedia.set_lang(lang) 
-		recommended_articles = wikipedia.search(word)
-		get_first = recommended_articles[0]
-		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
-		scrapped_data = data_scrapping(url)
-		if "error" in scrapped_data:
-			return {"error": "Website does not allow scrapping"}
-		#print(scrapped_data["output"])
-		output = prediction(scrapped_data["output"], 3)
-		keywords = word_extraction(str(output), lang)
-		#recommended_articles = search_on_wikipedia(keywords)
+		if len(word)>3:
+			definition, lang = get_def(word)
+			wikipedia.set_lang(lang) 
+			recommended_articles = wikipedia.search(word)
+			get_first = recommended_articles[0]
+			url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
+			scrapped_data = data_scrapping(url)
+			if "error" in scrapped_data:
+				return {"error": "Website does not allow scrapping"}
+			#print(scrapped_data["output"])
+			output = prediction(scrapped_data["output"], 3)
+			keywords = word_extraction(str(output), lang)
+			#recommended_articles = search_on_wikipedia(keywords)
 
-		out[word] = {
-				"definition": definition,
-				"output": output,
-				"keywords": keywords,
-				"recommended_articles": recommended_articles
-		}
+			out[word] = {
+					"definition": definition,
+					"output": output,
+					"keywords": keywords,
+					"recommended_articles": recommended_articles
+			}
 	return out
 
 
