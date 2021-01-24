@@ -1,6 +1,7 @@
 nltk==3.5
 transformers==4.1.1
 flask
+flask-cors==3.0.10
 boto3
 certifi==2020.12.5
 chardet==4.0.0
