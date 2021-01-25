@@ -32,7 +32,7 @@ def get_lang(g_words):
 	return str(word.src)
 
 
-@app.route('/ai-tips', methods=['POST'])
+@app.route('/ai-tips', methods=['GET', 'POST'])
 def aiTips():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -43,40 +43,52 @@ def aiTips():
 	doc = str(doc)
 	doc = doc.replace('_', ' ')
 	out = {}
-	for word in doc.split():
-		definition, lang = get_def(word)
-		wikipedia.set_lang(lang) 
-		recommended_articles = wikipedia.search(word)
-		get_first = recommended_articles[0]
-		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
-		scrapped_data = data_scrapping(url)
-		if "error" in scrapped_data:
-			return {"error": "Website does not allow scrapping"}
-		#print(scrapped_data["output"])
-		output = prediction(scrapped_data["output"], 3)
-		keywords = word_extraction(str(output), lang)
-		#recommended_articles = search_on_wikipedia(keywords)
+	word = doc
+	if len(word.split())==1:
+		try:
+			definition, lang = get_def(word)
+			wikipedia.set_lang(lang) 
+		except:
+			definition = "None"
+			lang = get_lang(word)
+		out["definition"] = definition
+	else:
+		lang = get_lang(word)
 
-		out[word] = {
-				"definition": definition,
-				"output": output,
-				"keywords": keywords,
-				"recommended_articles": recommended_articles
+	recommended_articles = wikipedia.search(word)
+	websites_url = []
+	for c in recommended_articles:
+		article = c
+		article = article.replace(' ', '_')
+		tmp = "https://" + lang + '.wikipedia.org/wiki/' + article
+		websites_url.append(tmp)
+
+	get_first = recommended_articles[0]
+	url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
+	scrapped_data = data_scrapping(url)
+	if "error" in scrapped_data:
+		return {"error": "Website does not allow scrapping"}
+	#print(scrapped_data["output"])
+	output = prediction(scrapped_data["output"], 3)
+	keywords = word_extraction(str(output), lang)
+	#recommended_articles = search_on_wikipedia(keywords)
+
+	out[word] = {
+			"output": output,
+			"keywords": keywords,
+			"recommended_articles": websites_url
 		}
 	return out
 
 
-@app.route('/chatter', methods=['POST'])
+@app.route('/chatter', methods=['GET', 'POST'])
 def chatterReq():
 	if not request.json:
 		return { "error": "No json body found in request" }
 
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
-	'''
-	if request.headers.get('X-API-KEY') != api_key:
-		return { "error" : "Invalid API Key included." }	
-	'''
+
 	doc = request.json['text']
 	
 	output = chatter(doc)
@@ -86,17 +98,14 @@ def chatterReq():
 	return out
 
 
-@app.route('/summarize-text', methods=['POST'])
+@app.route('/summary', methods=['GET', 'POST'])
 def summary():
 	if not request.json:
 		return { "error": "No json body found in request" }
 
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
-	'''
-	if request.headers.get('X-API-KEY') != api_key:
-		return { "error" : "Invalid API Key included." }	
-	'''
+
 	length = 5
 	if "length" in request.json:
 		length = request.json['length']
@@ -104,20 +113,20 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	out = { "output": output }
+	lang = get_lang(output)
+	wikipedia.set_lang(lang) 
+	keywords = word_extraction(str(output), lang) # TODO : get language
+	recommended_articles = search_on_wikipedia(keywords, lang)
 
-	if request.json.get("keywords", False):
-		lang = get_lang(output)
-		wikipedia.set_lang(lang) 
-		keywords = word_extraction(str(output), lang) # TODO : get language
-		recommended_articles = search_on_wikipedia(keywords)
-		out["keywords"] = keywords
-		out["recommended_articles"] = recommended_articles
-
+	out = {
+			"output": output, 
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
 	return out
 
 
-@app.route('/summarize-url', methods=["POST"])
+@app.route('/summarise-url')
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -131,29 +140,21 @@ def summarise_url():
 	if "length" in request.json:
 		length = request.json['length']
 
-	'''
-	if request.headers.get('X-API-KEY') != api_key:
-		return { "error" : "Invalid API Key included." }	
-	'''
-
-	out = {}
-
 	scrapped_data = data_scrapping(url)
 	if "error" in scrapped_data:
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	out["output"] = output
+	lang = get_lang(output)
+	wikipedia.set_lang(lang) 
+	keywords = word_extraction(str(output), lang) #TODO : get language
+	recommended_articles = search_on_wikipedia(keywords, lang)
 
-	if request.json.get("keywords", False): # Only Provide these if needed
-		lang = get_lang(output)
-		wikipedia.set_lang(lang) 
-		keywords = word_extraction(str(output), lang) # TODO : get language
-		recommended_articles = search_on_wikipedia(keywords)
-
-		out["keywords"] = keywords
-		out["recommended_articles"] = recommended_articles
-
+	out = {
+			"output": output, 
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
 	return out
 
 if __name__ == "__main__":
