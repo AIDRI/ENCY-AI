@@ -73,9 +73,19 @@
         "I want to give feedback"
       ],
       "responses": [
-        "Hey you can write about it to my creators! at <email> or just leave your message below.",
-        "You find a bug, or you just want to give your opinion ! Go ahead and tell the team coffee at <email>"
+        "Hey you can write about it to my creators! at ad.israel38@gmail.com or just leave your message below.",
+        "You find a bug, or you just want to give your opinion ! Go ahead and tell the team coffee at ad.israel38@gmail.com"
       ]
+    },
+    {
+      "tag": "summarizer",
+      "patterns": [ "How can I summarize a text", "Where is the page to summarize", "What is the options to summarize a text", "How can I test the summarizer", "I need to summ a text" ],
+      "responses": [ "You can use the summarizer by clicking on the magnifier icon. You can use the summarizer from an URL, or from a text." ]
+    },
+    {
+      "tag": "text-editor",
+      "patterns": [ "How can I use the text editor", "Where is the text editor", "What is the options on the text editor", "How can I write some text", "text editor" ],
+      "responses":  ["You can simply use the text editor by creating a new project (+ icon). You can add a title, lists, texts..."]
     },
     {
       "tag": "bye",
