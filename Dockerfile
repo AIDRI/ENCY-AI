@@ -14,6 +14,5 @@ RUN pwd && python install_models.py
 
 ENV FLASK_APP main.py
 
-CMD [ "gunicorn", "-w", "4", "-b", ":443", "--certfile", "/certs/fullchain.pem", "--keyfile", "/certs/privkey.pem", "main:app" ]
 
 

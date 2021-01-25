@@ -6,6 +6,7 @@ services:
     expose: 
       - 8080
     ports:
-      - "8080:80"
+      - "8080:8080"
     volumes:
       - ./src:/app
+    command: "gunicorn -w 2 -b :8080 'main:app'"
