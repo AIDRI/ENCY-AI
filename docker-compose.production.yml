@@ -1,9 +1,13 @@
 version: "3.9"
 
+# docker run -dit --name ency-app -p 443:443 --mount type=bind,source=/home/ubuntu/certs,target=/certs ency-ai
+
 services:
   web:
     build: .
     expose: 
-      - 80
+      - 443
     ports:
-      - "80:80"
+      - "443:443"
+    volumes: 
+      /home/ubuntu/certs:/certs
