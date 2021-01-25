@@ -26,7 +26,7 @@ MODEL_FILE_NAME = "distilbert.pt"
 """
 
 
-@app.route('/ai-tips', methods=['GET', 'POST'])
+@app.route('/ai-tips', methods=['POST'])
 def aiTips():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -60,7 +60,7 @@ def aiTips():
 	return out
 
 
-@app.route('/chatter', methods=['GET', 'POST'])
+@app.route('/chatter', methods=['POST'])
 def chatterReq():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -98,14 +98,14 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	keywords = word_extraction(str(output)) # TODO : get language
-	recommended_articles = search_on_wikipedia(keywords)
+	out = { "output": output }
 
-	out = {
-			"output": output, 
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
-		  }
+	if request.json.get("keywords", False):
+		keywords = word_extraction(str(output)) # TODO : get language
+		recommended_articles = search_on_wikipedia(keywords)
+		out["keywords"] = keywords
+		out["recommended_articles"] = recommended_articles
+
 	return out
 
 
@@ -123,22 +123,27 @@ def summarise_url():
 	if "length" in request.json:
 		length = request.json['length']
 
-	scrapped_data = data_scrapping(url)
-	if "error" in scrapped_data:
-		return {"error": "Website does not allow scrapping"}
 	'''
 	if request.headers.get('X-API-KEY') != api_key:
 		return { "error" : "Invalid API Key included." }	
 	'''
-	output = prediction(scrapped_data["output"], length) #length
-	keywords = word_extraction(str(output)) #TODO : get language
-	recommended_articles = search_on_wikipedia(keywords)
 
-	out = {
-			"output": output, 
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
-		  }
+	out = {}
+
+	scrapped_data = data_scrapping(url)
+	if "error" in scrapped_data:
+		return {"error": "Website does not allow scrapping"}
+
+	output = prediction(scrapped_data["output"], length) #length
+	out["output"] = output
+
+	if request.json.get("keywords", False): # Only Provide these if needed
+		keywords = word_extraction(str(output)) # TODO : get language
+		recommended_articles = search_on_wikipedia(keywords)
+
+		out["keywords"] = keywords
+		out["recommended_articles"] = recommended_articles
+
 	return out
 
 if __name__ == "__main__":

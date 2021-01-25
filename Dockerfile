@@ -9,4 +9,7 @@ RUN pip install -r /var/www/requirements.txt
 COPY ./scripts/punkt.py .
 RUN pwd && python punkt.py
 
+COPY ./scripts/corpus.py .
+RUN pwd && python corpus.py
+
 COPY src /app

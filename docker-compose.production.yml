@@ -4,8 +4,6 @@ services:
   web:
     build: .
     expose: 
-      - 8080
+      - 80
     ports:
-      - "8080:80"
-    volumes:
-      - ./src:/app
+      - "80:80"
