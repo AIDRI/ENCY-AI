@@ -1,4 +1,5 @@
 import wikipedia
+from googletrans import Translator
 # import boto3
 
 from flask import request, Flask
@@ -15,6 +16,10 @@ from va.chatter import chatter
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
 """
+def get_lang(g_words):
+	translator = Translator()
+	word = translator.translate(g_words, dest='en')
+	return str(word.src)
 
 
 @app.route('/ai-tips', methods=['GET', 'POST'])
@@ -84,7 +89,9 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	keywords = word_extraction(str(output)) # TODO : get language
+	lang = get_lang(output)
+	wikipedia.set_lang(lang) 
+	keywords = word_extraction(str(output), lang) # TODO : get language
 	recommended_articles = search_on_wikipedia(keywords)
 
 	out = {
@@ -114,7 +121,9 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	keywords = word_extraction(str(output)) #TODO : get language
+	lang = get_lang(output)
+	wikipedia.set_lang(lang) 
+	keywords = word_extraction(str(output), lang) #TODO : get language
 	recommended_articles = search_on_wikipedia(keywords)
 
 	out = {
