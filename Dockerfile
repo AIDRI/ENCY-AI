@@ -9,14 +9,12 @@ RUN pip install -r requirements.txt
 
 COPY ./src/ .
 
-COPY ./scripts/punkt.py .
-RUN pwd && python punkt.py
-
-COPY ./scripts/corpus.py .
-RUN pwd && python corpus.py
+COPY ./scripts/install_models.py .
+RUN pwd && python install_models.py
 
 ENV FLASK_APP main.py
 
 CMD [ "gunicorn", "-w", "4", "-b", ":443", "--certfile", "/certs/fullchain.pem", "--keyfile", "/certs/privkey.pem", "main:app" ]
 
 
+# docker run -dit --name ency-app -p 443:443 --mount type=bind,source=/home/ubuntu/certs,target=/certs ency-ai
