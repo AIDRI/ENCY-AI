@@ -1,2 +1,2 @@
 import nltk
-nltk.download('corpus')
+nltk.download("corpus")

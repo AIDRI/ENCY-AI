@@ -1,4 +1,5 @@
 import wikipedia
+from googletrans import Translator
 # import boto3
 
 from flask import request
@@ -24,6 +25,11 @@ assert api_key
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
 """
+
+def get_lang(g_words):
+	translator = Translator()
+	word = translator.translate(g_words, dest='en')
+	return str(word.src)
 
 
 @app.route('/ai-tips', methods=['POST'])
@@ -101,7 +107,9 @@ def summary():
 	out = { "output": output }
 
 	if request.json.get("keywords", False):
-		keywords = word_extraction(str(output)) # TODO : get language
+		lang = get_lang(output)
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) # TODO : get language
 		recommended_articles = search_on_wikipedia(keywords)
 		out["keywords"] = keywords
 		out["recommended_articles"] = recommended_articles
@@ -138,7 +146,9 @@ def summarise_url():
 	out["output"] = output
 
 	if request.json.get("keywords", False): # Only Provide these if needed
-		keywords = word_extraction(str(output)) # TODO : get language
+		lang = get_lang(output)
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) # TODO : get language
 		recommended_articles = search_on_wikipedia(keywords)
 
 		out["keywords"] = keywords
