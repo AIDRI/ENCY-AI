@@ -1,6 +1,6 @@
 import wikipedia
 
-def search_on_wikipedia(keywords):
+def search_on_wikipedia(keywords, lang):
 	websites = []
 	tmp = ''
 
@@ -10,5 +10,12 @@ def search_on_wikipedia(keywords):
 		for c in tmp:
 			if c not in websites:
 				websites.append(c)
-	
-	return websites
+
+	websites_url = []
+	for c in websites:
+		article = c
+		article = article.replace(' ', '_')
+		tmp = "https://" + lang + '.wikipedia.org/wiki/' + article
+		websites_url.append(tmp)
+
+	return websites_url
