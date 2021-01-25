@@ -17,4 +17,3 @@ ENV FLASK_APP main.py
 CMD [ "gunicorn", "-w", "4", "-b", ":443", "--certfile", "/certs/fullchain.pem", "--keyfile", "/certs/privkey.pem", "main:app" ]
 
 
-# docker run -dit --name ency-app -p 443:443 --mount type=bind,source=/home/ubuntu/certs,target=/certs ency-ai
