@@ -53,13 +53,13 @@ BERT uses the Transformer, an attention mechanism that learns contextual relatio
 2 - [Huggins Face Github](https://github.com/huggingface/transformers)  
 3 - [CNN-DailyMail dataset](https://github.com/JafferWilson/Process-Data-of-CNN-DailyMail)  
 
-## Cite us  
+## Use our API  
 
 If you use our API in your project, please cite us as :  
 {  
-&nbsp;&nbsp;title : "E.N.C.Y."  
-&nbsp;&nbsp;author : "Adrien I, ..."  
-&nbsp;&nbsp;date : "1/7/2021"  
+&nbsp;&nbsp;title : "ENCY"  
+&nbsp;&nbsp;author : "Adrien I"  
+&nbsp;&nbsp;date : "1/25/2021"  
 &nbsp;&nbsp;adress : "online"  
 &nbsp;&nbsp;url : "https://github.com/AIDRI/ENCY/"  
 }
