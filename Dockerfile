@@ -1,10 +1,13 @@
-FROM tiangolo/uwsgi-nginx-flask:python3.7
-# RUN apk --update add bash nano
-ENV STATIC_URL /static
-ENV STATIC_PATH /var/www/app/static
+FROM python:3.7
 
-COPY ./requirements.txt /var/www/requirements.txt
-RUN pip install -r /var/www/requirements.txt
+RUN pip install pipenv
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY ./src/ .
 
 COPY ./scripts/punkt.py .
 RUN pwd && python punkt.py
@@ -12,4 +15,8 @@ RUN pwd && python punkt.py
 COPY ./scripts/corpus.py .
 RUN pwd && python corpus.py
 
-COPY src /app
+ENV FLASK_APP main.py
+
+CMD [ "gunicorn", "-w", "4", "-b", ":443", "--certfile", "/certs/fullchain.pem", "--keyfile", "/certs/privkey.pem", "main:app" ]
+
+
