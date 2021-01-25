@@ -9,4 +9,4 @@ else:
     ssl._create_default_https_context = _create_unverified_https_context
 
 nltk.download("punkt", download_dir="/usr/local/nltk_data")
-nltk.download('corpus', download_dir="/usr/local/nltk_data")
+nltk.download("wordnet", download_dir="/usr/local/nltk_data")
