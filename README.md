@@ -7,11 +7,8 @@
 This project was realized within the framework of the Timathon #3. The theme of the competition was "Virtual assisstant".  
 We had one month to design our Artificial Intelligence, the API, as well as the front-end part of the project.  
 The project was realized by Team Coffee.  
-We divided into several teams to be able to realize this project:  
-- Team Artificial Intelligence: AIDRI  
-- Team REST API: Aineas  
-- Team Front-End :  
-- Team UI/UX :  
+The website was made by Milan and Saptarshi, the UI/UX by Karan, the API by Aineas and Adrien.  
+Finally, the AI part was made by Adrien (ower of the AI-repo).  
 
 Special thanks to TeckWithTim for hosting the competition.
 
