@@ -22,6 +22,28 @@ def get_lang(g_words):
 	return str(word.src)
 
 
+@app.route('/only-key-articles', methods=['GET', 'POST'])
+def get_ka():
+	if not request.json:
+		return { "error": "No json body found in request" }
+
+	if "text" not in request.json:
+		return { "error": "field text not found. Expected string" }
+
+	doc = request.json['text']
+
+	lang = get_lang(doc)
+	wikipedia.set_lang(lang) 
+	keywords = word_extraction(str(doc), lang) # TODO : get language
+	recommended_articles = search_on_wikipedia(keywords, lang)
+
+	out = {
+			"keywords": keywords,
+			"recommended_articles": recommended_articles
+		  }
+	return out
+
+
 @app.route('/ai-tips', methods=['GET', 'POST'])
 def aiTips():
 	if not request.json:
