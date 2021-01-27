@@ -75,14 +75,26 @@ def aiTips():
 		tmp = "https://" + lang + '.wikipedia.org/wiki/' + article
 		websites_url.append(tmp)
 
-	get_first = recommended_articles[0]
-	url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
-	scrapped_data = data_scrapping(url)
-	if "error" in scrapped_data:
-		return {"error": "Website does not allow scrapping"}
 	#print(scrapped_data["output"])
-	output = prediction(scrapped_data["output"], 3)
-	keywords = word_extraction(str(output), lang)
+	try:
+		get_first = recommended_articles[0]
+		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
+		#print(url)
+		scrapped_data = data_scrapping(url)
+		output = prediction(scrapped_data["output"], 3)
+		if "error" in scrapped_data:
+			return {"error": "Website does not allow scrapping"}
+		keywords = word_extraction(str(output), lang)
+
+	except:
+		get_first = recommended_articles[2]
+		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
+		#print(url)
+		scrapped_data = data_scrapping(url)
+		output = prediction(scrapped_data["output"], 3)
+		if "error" in scrapped_data:
+			return {"error": "Website does not allow scrapping"}
+		keywords = word_extraction(str(output), lang)
 	#recommended_articles = search_on_wikipedia(keywords)
 
 	out[word] = {
