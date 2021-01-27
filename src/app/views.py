@@ -59,7 +59,7 @@ def aiTips():
 	if not request.json:
 		return { "error": "No json body found in request" }
 	if "word" not in request.json:
-		return { "error": "field text not found. Expected string" }
+		return { "error": "field word not found. Expected string" }
 
 	doc = request.json['word']
 	doc = str(doc)
