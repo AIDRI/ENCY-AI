@@ -32,7 +32,7 @@ def get_lang(g_words):
 	return str(word.src)
 
 
-@app.route('/only-key-articles', methods=['GET', 'POST'])
+@app.route('/suggest-articles', methods=['POST'])
 def get_ka():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -54,7 +54,7 @@ def get_ka():
 	return out
 
 
-@app.route('/ai-tips', methods=['GET', 'POST'])
+@app.route('/ai-tips', methods=['POST'])
 def aiTips():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -103,7 +103,7 @@ def aiTips():
 	return out
 
 
-@app.route('/chatter', methods=['GET', 'POST'])
+@app.route('/chatter', methods=['POST'])
 def chatterReq():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -120,7 +120,7 @@ def chatterReq():
 	return out
 
 
-@app.route('/summary', methods=['GET', 'POST'])
+@app.route('/summary', methods=['POST'])
 def summary():
 	if not request.json:
 		return { "error": "No json body found in request" }
