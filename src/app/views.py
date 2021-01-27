@@ -120,7 +120,7 @@ def chatterReq():
 	return out
 
 
-@app.route('/summary', methods=['POST'])
+@app.route('/summarize-text', methods=['POST'])
 def summary():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -148,7 +148,7 @@ def summary():
 	return out
 
 
-@app.route('/summarise-url')
+@app.route('/summarize-url')
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
