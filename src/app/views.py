@@ -135,20 +135,23 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	lang = get_lang(output)
-	wikipedia.set_lang(lang) 
-	keywords = word_extraction(str(output), lang) # TODO : get language
-	recommended_articles = search_on_wikipedia(keywords, lang)
-
 	out = {
-			"output": output, 
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
-		  }
+		"output": output
+	}
+
+	if request.json.get("keywords", False):
+		lang = get_lang(output)
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) #TODO : get language
+		out["keywords"] = keywords
+
+		recommended_articles = search_on_wikipedia(keywords, lang)
+		out["recommended_articles"] = recommended_articles
+
 	return out
 
 
-@app.route('/summarize-url')
+@app.route('/summarize-url', methods=["POST"])
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -167,16 +170,19 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	lang = get_lang(output)
-	wikipedia.set_lang(lang) 
-	keywords = word_extraction(str(output), lang) #TODO : get language
-	recommended_articles = search_on_wikipedia(keywords, lang)
-
 	out = {
-			"output": output, 
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
-		  }
+		"output": output
+	}
+
+	if request.json.get("keywords", False):
+		lang = get_lang(output)
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) #TODO : get language
+		out["keywords"] = keywords
+
+		recommended_articles = search_on_wikipedia(keywords, lang)
+		out["recommended_articles"] = recommended_articles
+
 	return out
 
 if __name__ == "__main__":
