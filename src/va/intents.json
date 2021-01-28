@@ -37,7 +37,7 @@
         "I m stuck",
         "I am stuck"
       ],
-      "responses": ["<some help stuff>"]
+      "responses": [ "You can use the summarizer by clicking on the magnifier icon. You can use the summarizer from an URL, or from a text. You can also simply use the text editor by creating a new project (+ icon). You can add a title, lists, texts..." ]
     },
     {
       "tag": "introduce",
@@ -78,16 +78,6 @@
       ]
     },
     {
-      "tag": "summarizer",
-      "patterns": [ "How can I summarize a text", "Where is the page to summarize", "What is the options to summarize a text", "How can I test the summarizer", "I need to summ a text" ],
-      "responses": [ "You can use the summarizer by clicking on the magnifier icon. You can use the summarizer from an URL, or from a text." ]
-    },
-    {
-      "tag": "text-editor",
-      "patterns": [ "How can I use the text editor", "Where is the text editor", "What is the options on the text editor", "How can I write some text", "text editor" ],
-      "responses":  ["You can simply use the text editor by creating a new project (+ icon). You can add a title, lists, texts..."]
-    },
-    {
       "tag": "bye",
       "patterns": [ "Bye", "Goodbye", "Cya", "I am leaving", "See you later", "I need to go" ],
       "responses": [
@@ -105,6 +95,15 @@
         "Team Coffee create Ency !",
         "No one create me, I'm human like you... bip... boup !",
         "I was made by Team Coffee during the Timathon#3"
+      ]
+    },
+    {
+      "tag": "approve",
+      "patterns": [ "Ok", "Good", "Nice", "K", "Thanks", "Thx", "Allright", "K", "Cool", "Thanks for the answer", "Ok, thanks for the answer" ],
+      "responses": [
+        "Glad to have helped you",
+        "Super",
+        "Nice"
       ]
     }
   ]
