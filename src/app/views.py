@@ -94,17 +94,19 @@ def aiTips():
 		if "error" in scrapped_data:
 			return {"error": "Website does not allow scrapping"}
 		keywords = word_extraction(str(output), lang)
-
+		n_art = 1
 	except:
 		output = 'Ency did not find any interesting information about this topic !'
 		keywords = []
 		recommended_articles = []
-	#recommended_articles = search_on_wikipedia(keywords)
+		n_art = 0
+		#recommended_articles = search_on_wikipedia(keywords)
 
 	out[word] = {
 			"output": output,
 			"keywords": keywords,
 			"recommended_articles": websites_url
+			"n_art": n_art
 		}
 	return out
 
