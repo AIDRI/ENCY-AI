@@ -11,14 +11,14 @@ from AI.wiki import search_on_wikipedia
 from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
-#from os import getenv
+from os import getenv
 
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 '''
 load_dotenv()
 
-api_key = getenv('API_SECRET_KEY', None)
-assert api_key
+origin = getenv('ORIGINS_LIST', None)
+assert origin
 '''
 
 """
@@ -34,6 +34,8 @@ def get_lang(g_words):
 
 @app.route('/suggest-articles', methods=['POST'])
 def get_ka():
+	if request.environ['HTTP_ORIGIN'] != origin:
+		return { "error": "Not allowed"}
 	if not request.json:
 		return { "error": "No json body found in request" }
 
@@ -56,6 +58,8 @@ def get_ka():
 
 @app.route('/ai-tips', methods=['POST'])
 def aiTips():
+	if request.environ['HTTP_ORIGIN'] != origin:
+		return { "error": "Not allowed"}
 	if not request.json:
 		return { "error": "No json body found in request" }
 	if "word" not in request.json:
@@ -113,6 +117,8 @@ def aiTips():
 
 @app.route('/chatter', methods=['POST'])
 def chatterReq():
+	if request.environ['HTTP_ORIGIN'] != origin:
+		return { "error": "Not allowed"}
 	if not request.json:
 		return { "error": "No json body found in request" }
 
@@ -130,6 +136,8 @@ def chatterReq():
 
 @app.route('/summarize-text', methods=['POST'])
 def summary():
+	if request.environ['HTTP_ORIGIN'] != origin:
+		return { "error": "Not allowed"}
 	if not request.json:
 		return { "error": "No json body found in request" }
 
@@ -161,6 +169,8 @@ def summary():
 
 @app.route('/summarize-url', methods=["POST"])
 def summarise_url():
+	if request.environ['HTTP_ORIGIN'] != origin:
+		return { "error": "Not allowed"}
 	if not request.json:
 		return { "error": "No json body found in request" }
 	
