@@ -105,7 +105,7 @@ def aiTips():
 	out[word] = {
 			"output": output,
 			"keywords": keywords,
-			"recommended_articles": websites_url
+			"recommended_articles": websites_url,
 			"n_art": n_art
 		}
 	return out
