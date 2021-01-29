@@ -71,7 +71,7 @@ def aiTips():
 			definition, lang = get_def(word)
 			wikipedia.set_lang(lang) 
 		except:
-			definition = "None"
+			definition = ""
 			lang = get_lang(word)
 		out["definition"] = definition
 	else:
