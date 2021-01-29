@@ -11,9 +11,7 @@ from AI.wiki import search_on_wikipedia
 from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
-from os import getenv
 
-from dotenv import load_dotenv
 '''
 load_dotenv()
 
