@@ -19,6 +19,8 @@ origin = getenv('ORIGINS_LIST', None)
 assert origin
 '''
 
+origins = origin.split(", ")
+
 """
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
@@ -29,6 +31,10 @@ def get_lang(g_words):
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
 
+
+# Add if request.environ['HTTP_ORIGIN'] not in origins:
+#		return { "error": "Not allowed" }
+# for every route
 
 @app.route('/suggest-articles', methods=['POST'])
 def get_ka():
