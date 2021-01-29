@@ -96,8 +96,9 @@ def aiTips():
 		keywords = word_extraction(str(output), lang)
 
 	except:
-		output = ""
-		keywords = ""
+		output = 'Ency did not find any interesting information about this topic !'
+		keywords = []
+		recommended_articles = []
 	#recommended_articles = search_on_wikipedia(keywords)
 
 	out[word] = {
