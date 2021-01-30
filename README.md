@@ -8,7 +8,7 @@ This project was realized within the framework of the Timathon #3. The theme of 
 We had one month to design our Artificial Intelligence, the API, as well as the front-end part of the project.  
 The project was realized by Team Coffee.  
 The website was made by Milan and Saptarshi, the UI/UX by Karan, the API by Aineas and Adrien.  
-Finally, the AI part was made by Adrien (ower of the AI-repo).  
+Finally, the AI part was made by Adrien (owner of the AI-repo).  
 
 Special thanks to TeckWithTim for hosting the competition.
 
@@ -20,18 +20,35 @@ Team Coffee has therefore imagined a simple API to answer this problem: E.N.C.Y.
 By introducing an article (Wikipedia for example) to the Artificial Intelligence of E.N.C.Y., the BERT algorithm will create a summary of variable size to simplify the readings, but will also suggest interesting or similar readings to the user.
 
 # Installation
-Before starting, you must have python 3.7 64 bit installed and running on your system, else some of the
-requirements will fail to install.          
-1.Run the following commands: virtualenv restapivenv pip install -r requirements.txt            
-2.Go to AI/checkpoints/download.sh and run it or open the file and download them manually           
-3.Rename the 400 MB file that you just downloaded to bert.pt, the other distilbert.pt          
-4.Go to REST_API and run the following command: py manage.py runserver (optional, define the port here)         
-Now the server is running and you are ready to make requests to http://domain.com:port/api/text_summarizer/
+Before starting, you must have python 3.6/7/8 64 bit installed and running on your system, else some of the
+requirements will fail to install.  
+Make sure you have Postman install on your computer : https://www.postman.com/downloads/
 
+Using pip and cmd :  
 
-## Usage
+1. Download Distilbert model and put it into src/AI/checkpoints/  
+2. Run the following command on your computer : pip install -r requirements.txt  
+3. Go to src and run global.py  
+4. Wait for the API to start  
+5. Open Postman and use the following configuration :  
+    - Use GET method  
+    - Add the URL : http://0.0.0.0:80/route  
+    - Go to Body -> raw -> JSON  
+    
+Using docker :
 
-- Lorem Ipsum Dolor
+1. Download Distilbert model and put it into src/AI/checkpoints/  
+2. Run the following command on your computer : docker-compose up --build  
+3. Wait for the dependencies to install  
+4. Open Postman and use the following configuration :  
+    - Use GET method  
+    - Add the URL : http://0.0.0.0:80/route  
+    - Go to Body -> raw -> JSON  
+
+## Usage  
+
+To use the API, you have differents choices :  
+
 
 ## AI model
 
