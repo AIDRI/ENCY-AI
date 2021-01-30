@@ -47,8 +47,14 @@ Using docker :
 
 ## Usage  
 
-To use the API, you have differents choices :  
+To use the API, you have differents choices : (you ll need to replace "route" by the route given here)  
 
+1. ai-tips/ : given a word, the AI will give you some definition, articles, and keywords  
+{  
+    "word" : "yourword"  
+}  
+
+2.
 
 ## AI model
 
