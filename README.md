@@ -51,10 +51,28 @@ To use the API, you have differents choices : (you ll need to replace "route" by
 
 1. ai-tips/ : given a word, the AI will give you some definition, articles, and keywords  
 {  
-    "word" : "yourword"  
+&nbsp;&nbsp;"word" : "yourword"  
 }  
 
-2.
+2. chatter/ : given an expression, the AI will give you some answers. It is a simple chatbot  
+{  
+&nbsp;&nbsp;"text" : "yourtext"
+}  
+
+3. summarize-text/ : given a text, the AI will give you a summary, some keywords, and some wikipedia articles.  
+{  
+&nbsp;&nbsp;"text" : "yourtext",
+&nbsp;&nbsp;"length" : "numberofsentences",  
+&nbsp;&nbsp;"keywords" : True / False  
+}
+
+3. summarize-url/ : given an url, the AI will give you a summary, some keywords, and some wikipedia articles.  
+{  
+&nbsp;&nbsp;"url" : "yoururl",
+&nbsp;&nbsp;"length" : "numberofsentences",  
+&nbsp;&nbsp;"keywords" : True / False  
+}
+
 
 ## AI model
 
