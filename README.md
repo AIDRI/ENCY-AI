@@ -46,9 +46,9 @@ BERT uses the Transformer, an attention mechanism that learns contextual relatio
 
 ## References
 
-1 - [{"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", "Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova"}](https://arxiv.org/pdf/1810.04805.pdf)  
-2 - [Generating text summaries using GPT-2](https://blog.paperspace.com/generating-text-summaries-gpt-2/) (not used in this first version)
-3 - [{"Attention is all you need", "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin"}](https://arxiv.org/abs/1706.03762)
+1 - [{"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", "Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova"}](https://arxiv.org/pdf/1810.04805.pdf)   
+2 - [Generating text summaries using GPT-2](https://blog.paperspace.com/generating-text-summaries-gpt-2/) (not used in this first version)  
+3 - [{"Attention is all you need", "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin"}](https://arxiv.org/abs/1706.03762)  
 3 - [Huggins Face Github](https://github.com/huggingface/transformers)  
 4 - [CNN-DailyMail dataset](https://github.com/JafferWilson/Process-Data-of-CNN-DailyMail)  
 
