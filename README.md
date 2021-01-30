@@ -63,14 +63,14 @@ To use the API, you have differents choices : (you ll need to replace "route" by
 {  
 &nbsp;&nbsp;"text" : "yourtext",  
 &nbsp;&nbsp;"length" : n,  
-&nbsp;&nbsp;"keywords" : True / False  
+&nbsp;&nbsp;"keywords" : true / false  
 }
 
 3. summarize-url/ : given an url, the AI will give you a summary, some keywords, and some wikipedia articles.  
 {  
 &nbsp;&nbsp;"url" : "yoururl",  
 &nbsp;&nbsp;"length" : n,  
-&nbsp;&nbsp;"keywords" : True / False  
+&nbsp;&nbsp;"keywords" : true / false  
 }
 
 
