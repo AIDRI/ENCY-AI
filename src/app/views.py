@@ -11,17 +11,15 @@ from AI.wiki import search_on_wikipedia
 from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
-#from os import getenv
-
-#from dotenv import load_dotenv
-'''
-load_dotenv()
-
-api_key = getenv('API_SECRET_KEY', None)
-assert api_key
-'''
 
 """
+load_dotenv()
+
+origin = getenv('ORIGINS_LIST', None)
+assert origin
+
+origins = origin.split(", ")
+
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
 """
@@ -148,7 +146,7 @@ def summary():
 	}
 
 	if request.json.get("keywords", False):
-		lang = get_lang(output)
+		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		out["keywords"] = keywords
@@ -183,7 +181,7 @@ def summarise_url():
 	}
 
 	if request.json.get("keywords", False):
-		lang = get_lang(output)
+		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		out["keywords"] = keywords
