@@ -21,8 +21,8 @@ def get_lang(g_words):
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
 
-
-@app.route('/only-key-articles', methods=['GET', 'POST'])
+'''
+@app.route('/suggest-articles', methods=['GET', 'POST'])
 def get_ka():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -42,7 +42,7 @@ def get_ka():
 			"recommended_articles": recommended_articles
 		  }
 	return out
-
+'''
 
 @app.route('/ai-tips', methods=['GET', 'POST'])
 def aiTips():
@@ -119,7 +119,7 @@ def chatterReq():
 	return out
 
 
-@app.route('/summary', methods=['GET', 'POST'])
+@app.route('/summarize-text', methods=['GET', 'POST'])
 def summary():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -134,7 +134,7 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
-	lang = get_lang(output)
+	lang = get_lang(output[0])
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) # TODO : get language
 	recommended_articles = search_on_wikipedia(keywords, lang)
@@ -147,7 +147,7 @@ def summary():
 	return out
 
 
-@app.route('/summarise-url')
+@app.route('/summarize-url')
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
@@ -166,7 +166,7 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	lang = get_lang(output)
+	lang = get_lang(output[0])
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) #TODO : get language
 	recommended_articles = search_on_wikipedia(keywords, lang)

@@ -31,7 +31,7 @@ def get_lang(g_words):
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
 
-
+'''
 @app.route('/suggest-articles', methods=['POST'])
 def get_ka():
 	if not request.json:
@@ -52,7 +52,7 @@ def get_ka():
 			"recommended_articles": recommended_articles
 		  }
 	return out
-
+'''
 
 @app.route('/ai-tips', methods=['POST'])
 def aiTips():
