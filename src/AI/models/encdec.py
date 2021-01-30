@@ -40,23 +40,14 @@ class MultiHeadAttn(nn.Module): #found on github
 		klength = k.size(1)
 		qlength = q.size(1)
 		if cache is not None:
-			if type == "self":
-				q = self.wq(q)
-				k = shape(self.wk(q), bs, hl_n, hl)
-				v = shape(self.wk(q), bs, hl_n, hl)
-				if cache is not None:
-					if cache["self_keys"] is not None: k = torch.cat((cache["self_keys"].to('cpu'), k), dim=2)
-					if cache["self_values"] is not None: v = torch.cat((cache["self_values"].to('cpu'), v), dim=2)
-					cache["self_keys"] = k
-					cache["self_values"] = v
-			elif type == "context":
-				q = self.wq(q)
-				if cache is not None:
-					if cache["memory_keys"] is None: k = shape(self.wk(k), bs, hl_n, hl); v = shape(self.wv(v), bs, hl_n, hl)
-					else: k, v = cache["memory_keys"], cache["memory_values"]
-					cache["memory_keys"] = k
-					cache["memory_values"] = v
-				else: k, v = shape(self.wk(k), bs, hl_n, hl), shape(self.wv(v), bs, hl_n, hl)
+			q = self.wq(q)
+			k = shape(self.wk(q), bs, hl_n, hl)
+			v = shape(self.wk(q), bs, hl_n, hl)
+			if cache is not None:
+				if cache["self_keys"] is not None: k = torch.cat((cache["self_keys"].to('cpu'), k), dim=2)
+				if cache["self_values"] is not None: v = torch.cat((cache["self_values"].to('cpu'), v), dim=2)
+				cache["self_keys"] = k
+				cache["self_values"] = v
 		else: k, v, q = shape(self.wk(k), bs, hl_n, hl), shape(self.wv(v), bs, hl_n, hl), self.wq(q)
 		q = shape(q, bs, hl_n, hl)
 		klength = k.size(2)
