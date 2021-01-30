@@ -11,15 +11,17 @@ from AI.wiki import search_on_wikipedia
 from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
+#from os import getenv
 
-"""
+#from dotenv import load_dotenv
+'''
 load_dotenv()
 
-origin = getenv('ORIGINS_LIST', None)
-assert origin
+api_key = getenv('API_SECRET_KEY', None)
+assert api_key
+'''
 
-origins = origin.split(", ")
-
+"""
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
 """
@@ -29,7 +31,7 @@ def get_lang(g_words):
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
 
-'''
+
 @app.route('/suggest-articles', methods=['POST'])
 def get_ka():
 	if not request.json:
@@ -50,7 +52,7 @@ def get_ka():
 			"recommended_articles": recommended_articles
 		  }
 	return out
-'''
+
 
 @app.route('/ai-tips', methods=['POST'])
 def aiTips():
@@ -146,7 +148,7 @@ def summary():
 	}
 
 	if request.json.get("keywords", False):
-		lang = get_lang(output[0])
+		lang = get_lang(output)
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		out["keywords"] = keywords
@@ -176,16 +178,19 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	lang = get_lang(output[0])
-	wikipedia.set_lang(lang) 
-	keywords = word_extraction(str(output), lang) #TODO : get language
-	recommended_articles = search_on_wikipedia(keywords, lang)
-
 	out = {
-			"output": output,
-			"keywords": keywords,
-			"recommended_articles": recommended_articles
-		  }
+		"output": output
+	}
+
+	if request.json.get("keywords", False):
+		lang = get_lang(output)
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) #TODO : get language
+		out["keywords"] = keywords
+
+		recommended_articles = search_on_wikipedia(keywords, lang)
+		out["recommended_articles"] = recommended_articles
+
 	return out
 
 if __name__ == "__main__":
