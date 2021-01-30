@@ -1,23 +1,18 @@
-# ENCY-AI
+<img src="./assets/Ency.png">
 
-![ENCY_logo](/assets/Ency.png)
 
-## Context
+## 💡 Introduction
 
-This project was realized within the framework of the Timathon #3. The theme of the competition was "Virtual assisstant".  
-We had one month to design our Artificial Intelligence, the API, as well as the front-end part of the project.  
-The project was realized by Team Coffee.  
-The website was made by Milan and Saptarshi, the UI/UX by Karan, the API by Aineas and Adrien.  
-Finally, the AI part was made by Adrien (owner of the AI-repo).  
+Researching and creating projects is tedious. Ency is a virtual assistant developed with the concept of automating research and organizing projects and assignments. Get access ENCY [here](https://ency.live/)! 
 
-Special thanks to TeckWithTim for hosting the competition.
+This is the AI repository for Ency, [Link to the Web Repository](https://github.com/milan090/ency).
 
-## Presentation
+## 🎨 Presentation
 
-This is a virtual assistant project that aims to help and simplify a user's web searches.  
-The project is aimed at students, bloggers, researchers, and others.  
-Team Coffee has therefore imagined a simple API to answer this problem: E.N.C.Y.  
-By introducing an article (Wikipedia for example) to the Artificial Intelligence of E.N.C.Y., the BERT algorithm will create a summary of variable size to simplify the readings, but will also suggest interesting or similar readings to the user.
+- This is a virtual assistant project that aims to help and simplify a user's web searches.  
+- The project is aimed at students, bloggers, researchers, and others.  
+- Team Coffee has therefore imagined a simple API to answer this problem: E.N.C.Y.  
+- By introducing an article (Wikipedia for example) to the Artificial Intelligence of E.N.C.Y., the BERT algorithm will create a summary of variable size to simplify the readings, but will also suggest interesting or similar readings to the user.
 
 # Installation
 Before starting, you must have python 3.6/7/8 64 bit installed and running on your system, else some of the
