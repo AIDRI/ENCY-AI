@@ -47,8 +47,10 @@ BERT uses the Transformer, an attention mechanism that learns contextual relatio
 ## References
 
 1 - [{"BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding", "Jacob Devlin, Ming-Wei Chang, Kenton Lee, Kristina Toutanova"}](https://arxiv.org/pdf/1810.04805.pdf)  
-2 - [Huggins Face Github](https://github.com/huggingface/transformers)  
-3 - [CNN-DailyMail dataset](https://github.com/JafferWilson/Process-Data-of-CNN-DailyMail)  
+2 - [Generating text summaries using GPT-2](https://blog.paperspace.com/generating-text-summaries-gpt-2/) (not used in this first version)
+3 - [{"Attention is all you need", "Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, Illia Polosukhin"}](https://arxiv.org/abs/1706.03762)
+3 - [Huggins Face Github](https://github.com/huggingface/transformers)  
+4 - [CNN-DailyMail dataset](https://github.com/JafferWilson/Process-Data-of-CNN-DailyMail)  
 
 ## Use our API  
 
@@ -58,5 +60,5 @@ If you use our API in your project, please cite us as :
 &nbsp;&nbsp;author : "Adrien I"  
 &nbsp;&nbsp;date : "1/25/2021"  
 &nbsp;&nbsp;adress : "online"  
-&nbsp;&nbsp;url : "https://github.com/AIDRI/ENCY/"  
+&nbsp;&nbsp;url : "https://github.com/AIDRI/ENCY-AI/"  
 }
