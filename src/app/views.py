@@ -12,16 +12,14 @@ from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
 from va.chatter import chatter
 
-'''
+"""
 load_dotenv()
 
 origin = getenv('ORIGINS_LIST', None)
 assert origin
-'''
 
 origins = origin.split(", ")
 
-"""
 BUCKET_NAME = "ency-ai"
 MODEL_FILE_NAME = "distilbert.pt"
 """
