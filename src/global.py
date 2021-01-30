@@ -20,7 +20,7 @@ def get_lang(g_words):
 	translator = Translator()
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
-
+#test
 '''
 @app.route('/suggest-articles', methods=['GET', 'POST'])
 def get_ka():
