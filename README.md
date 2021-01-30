@@ -1,6 +1,6 @@
 # ENCY-AI
 
-![ENCY_logo](/assets/ency_logo.png)
+![ENCY_logo](/assets/Ency.png)
 
 ## Context
 
