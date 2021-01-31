@@ -47,4 +47,4 @@ def chatter(doc):
 				responses = par['responses']
 		return random.choice(responses)
 	else:
-		return 'Mmmh... be more explicit, i\'m just a poor robot who try to help you :)'
+		return 'I did not receive a response ! Can you try again ?'
