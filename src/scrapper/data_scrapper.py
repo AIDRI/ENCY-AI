@@ -46,6 +46,6 @@ def data_scrapping(url):
 
     total = ""
     for par in final:
-        total += par
+        total += par + " "
 
     return {"output": total}
