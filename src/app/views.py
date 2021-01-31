@@ -145,7 +145,7 @@ def summary():
 	}
 
 	if request.json.get("keywords", False):
-		lang = get_lang(output)
+		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		out["keywords"] = keywords
@@ -180,7 +180,7 @@ def summarise_url():
 	}
 
 	if request.json.get("keywords", False):
-		lang = get_lang(output)
+		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		out["keywords"] = keywords
