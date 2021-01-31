@@ -77,6 +77,7 @@ def aiTips():
 
 	#print(scrapped_data["output"])
 	try:
+		k = []
 		get_first = recommended_articles[0]
 		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
 		#print(url)
@@ -85,6 +86,8 @@ def aiTips():
 		if "error" in scrapped_data:
 			return {"error": "Website does not allow scrapping"}
 		keywords = word_extraction(str(output), lang)
+		for i in keywords:
+			k.append(i[1])
 	except:
 		output = None
 		keywords = []
@@ -93,7 +96,7 @@ def aiTips():
 
 	out[word] = {
 			"output": output,
-			"keywords": keywords,
+			"keywords": k,
 			"recommended_articles": websites_url
 		}
 	return out
@@ -130,15 +133,18 @@ def summary():
 
 	doc = request.json['text']
 	
+	k = []
 	output = prediction(doc, length)
 	lang = get_lang(output[0])
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) # TODO : get language
+	for i in keywords:
+		k.append(i[1])
 	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
 			"output": output, 
-			"keywords": keywords,
+			"keywords": k,
 			"recommended_articles": recommended_articles
 		  }
 	return out
@@ -162,15 +168,18 @@ def summarise_url():
 	if "error" in scrapped_data:
 		return {"error": "Website does not allow scrapping"}
 
+	k = []
 	output = prediction(scrapped_data["output"], length) #length
 	lang = get_lang(output[0])
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) #TODO : get language
+	for i in keywords:
+		k.append(i[1])
 	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
 			"output": output, 
-			"keywords": keywords,
+			"keywords": k,
 			"recommended_articles": recommended_articles
 		  }
 	return out

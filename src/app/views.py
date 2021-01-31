@@ -41,14 +41,16 @@ def get_ka():
 		return { "error": "field text not found. Expected string" }
 
 	doc = request.json['text']
-
+	k = []
 	lang = get_lang(doc)
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(doc), lang) # TODO : get language
+	for i in keywords:
+		k.append(i[1])
 	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
-			"keywords": keywords,
+			"keywords": k,
 			"recommended_articles": recommended_articles
 		  }
 	return out
@@ -86,6 +88,7 @@ def aiTips():
 		websites_url.append(tmp)
 
 	try:
+		k = []
 		get_first = recommended_articles[0]
 		url = 'https://' + lang + '.wikipedia.org/wiki/' + get_first
 		#print(url)
@@ -94,15 +97,17 @@ def aiTips():
 		if "error" in scrapped_data:
 			return {"error": "Website does not allow scrapping"}
 		keywords = word_extraction(str(output), lang)
+		for i in keywords:
+			k.append(i[1])
 	except:
 		output = None
-		keywords = []
+		k = []
 		recommended_articles = []
 		#recommended_articles = search_on_wikipedia(keywords)
 
 	out[word] = {
 			"output": output,
-			"keywords": keywords,
+			"keywords": k,
 			"recommended_articles": websites_url
 		}
 	return out
@@ -143,12 +148,14 @@ def summary():
 	out = {
 		"output": output
 	}
-
+	k = []
 	if request.json.get("keywords", False):
 		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
-		out["keywords"] = keywords
+		for i in keywords:
+			k.append(i[1])
+		out["keywords"] = k
 
 		recommended_articles = search_on_wikipedia(keywords, lang)
 		out["recommended_articles"] = recommended_articles
@@ -178,12 +185,14 @@ def summarise_url():
 	out = {
 		"output": output
 	}
-
+	k = []
 	if request.json.get("keywords", False):
 		lang = get_lang(output[0])
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
-		out["keywords"] = keywords
+		for i in keywords:
+			k.append(i[1])
+		out["keywords"] = k
 
 		recommended_articles = search_on_wikipedia(keywords, lang)
 		out["recommended_articles"] = recommended_articles
