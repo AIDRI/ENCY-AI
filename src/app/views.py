@@ -3,32 +3,19 @@ from googletrans import Translator
 # import boto3
 
 from flask import request
-from app import app
 
 from AI.test import prediction
 from AI.word_extraction import word_extraction
 from AI.wiki import search_on_wikipedia
 from AI.get_def import get_def
 from scrapper.data_scrapper import data_scrapping
-from va.chatter import chatter
-#from os import getenv
+#from va.chatter import chatter
+from app import app
 
-#from dotenv import load_dotenv
-'''
-load_dotenv()
 
-api_key = getenv('API_SECRET_KEY', None)
-assert api_key
-'''
-
-"""
-BUCKET_NAME = "ency-ai"
-MODEL_FILE_NAME = "distilbert.pt"
-"""
 
 def get_lang(g_words):
-	translator = Translator()
-	word = translator.translate(g_words, dest='en')
+	word = Translator().translate(g_words, dest='en')
 	return str(word.src)
 
 
@@ -36,7 +23,6 @@ def get_lang(g_words):
 def get_ka():
 	if not request.json:
 		return { "error": "No json body found in request" }
-
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
 
@@ -49,15 +35,19 @@ def get_ka():
 		k.append(i[1])
 	recommended_articles = search_on_wikipedia(keywords, lang)
 
-	out = {
+	# out = {
+	# 		"keywords": k,
+	# 		"recommended_articles": recommended_articles
+	# 	  }
+	return {
 			"keywords": k,
 			"recommended_articles": recommended_articles
 		  }
-	return out
 
 
 @app.route('/ai-tips', methods=['POST'])
-def aiTips():
+def ai_tips():
+	
 	if not request.json:
 		return { "error": "No json body found in request" }
 	if "word" not in request.json:
@@ -68,7 +58,7 @@ def aiTips():
 	doc = doc.replace('_', ' ')
 	out = {}
 	word = doc
-	if len(word.split())==1:
+	if len(word.split()) == 1:
 		try:
 			definition, lang = get_def(word)
 			wikipedia.set_lang(lang) 
@@ -105,36 +95,40 @@ def aiTips():
 		recommended_articles = []
 		#recommended_articles = search_on_wikipedia(keywords)
 
-	out[word] = {
+	# out[word] = {
+	# 		"output": output,
+	# 		"keywords": k,
+	# 		"recommended_articles": websites_url
+	# 	}
+	return {
 			"output": output,
 			"keywords": k,
 			"recommended_articles": websites_url
 		}
-	return out
 
 
-@app.route('/chatter', methods=['POST'])
-def chatterReq():
-	if not request.json:
-		return { "error": "No json body found in request" }
+# @app.route('/chatter', methods=['POST'])
+# def chatterReq():
+# 	if not request.json:
+# 		return { "error": "No json body found in request" }
 
-	if "text" not in request.json:
-		return { "error": "field text not found. Expected string" }
+# 	if "text" not in request.json:
+# 		return { "error": "field text not found. Expected string" }
 
-	doc = request.json['text']
+# 	doc = request.json['text']
 	
-	output = chatter(doc)
-	out = {
-			"output": output
-		  }
-	return out
+# 	output = chatter(doc)
+# 	out = {
+# 			"output": output
+# 		  }
+# 	return out
 
 
 @app.route('/summarize-text', methods=['POST'])
-def summary():
+def summarize_text():
+
 	if not request.json:
 		return { "error": "No json body found in request" }
-
 	if "text" not in request.json:
 		return { "error": "field text not found. Expected string" }
 
@@ -145,20 +139,22 @@ def summary():
 	doc = request.json['text']
 	
 	output = prediction(doc, length)
+	
 	out = {
 		"output": output
 	}
-	k = []
-	if request.json.get("keywords", False):
-		lang = get_lang(output[0])
-		wikipedia.set_lang(lang) 
-		keywords = word_extraction(str(output), lang) #TODO : get language
-		for i in keywords:
-			k.append(i[1])
-		out["keywords"] = k
+	# k = []
+	# if request.json.get("keywords", False):
+	# 	lang = get_lang(output[0])
+	# 	wikipedia.set_lang(lang) 
+	# 	keywords = word_extraction(str(output), lang) #TODO : get language
+	# 	for i in keywords:
+	# 		k.append(i[1])
+	# 	out["keywords"] = k
 
-		recommended_articles = search_on_wikipedia(keywords, lang)
-		out["recommended_articles"] = recommended_articles
+	# 	recommended_articles = search_on_wikipedia(keywords, lang)
+	# 	out["recommended_articles"] = recommended_articles
+	#result not being returned so commented it out
 
 	return out
 
@@ -167,7 +163,6 @@ def summary():
 def summarise_url():
 	if not request.json:
 		return { "error": "No json body found in request" }
-	
 	if "url" not in request.json:
 		return { "error": "field url not found. Expected string" }
 
@@ -182,9 +177,7 @@ def summarise_url():
 		return {"error": "Website does not allow scrapping"}
 
 	output = prediction(scrapped_data["output"], length) #length
-	out = {
-		"output": output
-	}
+	out = { "output": output }
 	k = []
 	if request.json.get("keywords", False):
 		lang = get_lang(output[0])
@@ -195,9 +188,9 @@ def summarise_url():
 		out["keywords"] = k
 
 		recommended_articles = search_on_wikipedia(keywords, lang)
-		out["recommended_articles"] = recommended_articles
+		#out["recommended_articles"] = recommended_articles
 
-	return out
+	return recommended_articles
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True, port=80)
