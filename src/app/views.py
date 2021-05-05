@@ -32,8 +32,9 @@ def get_ka():
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(doc), lang) # TODO : get language
 	for i in keywords:
-		k.append(i[1])
-	recommended_articles = search_on_wikipedia(keywords, lang)
+		if i[1]<=0.09:
+			k.append(i[0])
+	recommended_articles = search_on_wikipedia(k, lang)
 
 	# out = {
 	# 		"keywords": k,
@@ -88,12 +89,13 @@ def ai_tips():
 			return {"error": "Website does not allow scrapping"}
 		keywords = word_extraction(str(output), lang)
 		for i in keywords:
-			k.append(i[1])
+			if i[1]<=0.09:
+				k.append(i[0])
 	except:
 		output = None
 		k = []
 		recommended_articles = []
-		#recommended_articles = search_on_wikipedia(keywords)
+		#recommended_articles = search_on_wikipedia(k)
 
 	# out[word] = {
 	# 		"output": output,
@@ -143,19 +145,19 @@ def summarize_text():
 	out = {
 		"output": output
 	}
-	# k = []
-	# if request.json.get("keywords", False):
-	# 	lang = get_lang(output[0])
-	# 	wikipedia.set_lang(lang) 
-	# 	keywords = word_extraction(str(output), lang) #TODO : get language
-	# 	for i in keywords:
-	# 		k.append(i[1])
-	# 	out["keywords"] = k
+	k = []
+	if request.json.get("keywords", False):
+		lang = get_lang(output[0])
+		wikipedia.set_lang(lang) 
+		keywords = word_extraction(str(output), lang) #TODO : get language
+		for i in keywords:
+			if i[1]<=0.09:
+				k.append(i[0])
+		out["keywords"] = k
 
-	# 	recommended_articles = search_on_wikipedia(keywords, lang)
-	# 	out["recommended_articles"] = recommended_articles
-	#result not being returned so commented it out
-
+	 	recommended_articles = search_on_wikipedia(k, lang)
+	 	out["recommended_articles"] = recommended_articles
+	
 	return out
 
 
@@ -184,10 +186,11 @@ def summarise_url():
 		wikipedia.set_lang(lang) 
 		keywords = word_extraction(str(output), lang) #TODO : get language
 		for i in keywords:
-			k.append(i[1])
+			if i[1]<=0.09:
+				k.append(i[0])
 		out["keywords"] = k
 
-		recommended_articles = search_on_wikipedia(keywords, lang)
+		recommended_articles = search_on_wikipedia(k, lang)
 		#out["recommended_articles"] = recommended_articles
 
 	return recommended_articles
