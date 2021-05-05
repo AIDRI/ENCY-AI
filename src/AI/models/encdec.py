@@ -20,7 +20,7 @@ class ForwardPos(nn.Module):
 		out = self.dropout(self.w2(self.dropout(self.activation(self.w1(self.LayerNorm(x)))))) + residual
 		return out
 
-class MultiHeadAttn(nn.Module): #found on github
+class MultiHeadAttn(nn.Module):
 	def __init__(self, hl_n, dim):
 		self.hl = dim // hl_n
 		self.dim = dim
