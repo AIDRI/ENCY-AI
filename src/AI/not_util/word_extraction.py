@@ -1,10 +1,9 @@
-import itertools
-
-import numpy as np
 from sentence_transformers import SentenceTransformer
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from transformers import AutoModel, AutoTokenizer
+from sklearn.feature_extraction.text import CountVectorizer
+import numpy as np
+import itertools
+from transformers import AutoTokenizer, AutoModel
 
 
 def words_distance(string, word, words, n, nc):
