@@ -5,6 +5,7 @@ import numpy as np
 import itertools
 from transformers import AutoTokenizer, AutoModel
 
+
 def words_distance(string, word, words, n, nc):
 	words_d = cosine_similarity(word, word)
 	idx = list(cosine_similarity(string, word).argsort()[0][-nc:])
