@@ -6,8 +6,9 @@ from AI.word_extraction import word_extraction
 from flask import request
 from googletrans import Translator
 from scrapper.data_scrapper import data_scrapping
-
+import os
 from app import app
+
 
 def get_lang(g_words):
 	word = Translator().translate(g_words, dest='en')
@@ -17,8 +18,10 @@ def json_body_check(req, type):
     if not req:
         return { "e" }
     if type not in req:
-        return { "e" }    
-   
+        return { "e" } 
+    if req["api_key"] != os.getenv("API_KEY"):       
+        return { "e" }
+
 
 @app.route('/suggest-articles', methods=['POST'])
 def sa():
@@ -131,8 +134,7 @@ def st():
 @app.route('/summarize-url', methods=["POST"])
 def su():
     if json_body_check(request.json, "url") == { "e" }:
-        return {"error": "invalid request"}
-
+        return { "error": "invalid request" }
     url = request.json["url"]
 
     length = 5
