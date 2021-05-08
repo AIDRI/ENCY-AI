@@ -7,13 +7,13 @@ from flask import request
 from googletrans import Translator
 from scrapper.data_scrapper import data_scrapping
 import os
+
 from app import app
 
 
 def get_lang(g_words):
 	word = Translator().translate(g_words, dest='en')
 	return str(word.src)
-
 def json_body_check(req, type):
     if not req:
         return { "e" }
