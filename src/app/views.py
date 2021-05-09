@@ -7,10 +7,10 @@ from flask import request
 from googletrans import Translator
 from scrapper.data_scrapper import data_scrapping
 import os
-
+from dotenv import load_dotenv
 from app import app
 
-
+load_dotenv()
 def get_lang(g_words):
 	word = Translator().translate(g_words, dest='en')
 	return str(word.src)
@@ -18,8 +18,8 @@ def json_body_check(req, type):
     if not req:
         return { "e" }
     if type not in req:
-        return { "e" } 
-    if req["api_key"] != os.getenv("API_KEY"):       
+        return { "e" }   
+    if req.get("api_key", False) != os.getenv("API_KEY"):       
         return { "e" }
 
 
@@ -48,7 +48,7 @@ def sa():
 @app.route('/ai-tips', methods=['POST'])
 def at():
     if json_body_check(request.json, "word") == { "e" }:
-        return {"error": "invalid request"}
+        return { "error": "invalid request" }
 
     word = request.json['word']
     word = str(word)
