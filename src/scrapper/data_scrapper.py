@@ -4,7 +4,7 @@ from newspaper import Article
 
 def data_scrapping(url):
     article = Article(url)
-    article.download()
+    article.download()    
     article.parse()
     print('article parse')
     text = article.text

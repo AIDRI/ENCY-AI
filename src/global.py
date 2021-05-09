@@ -21,7 +21,7 @@ def get_lang(g_words):
 	word = translator.translate(g_words, dest='en')
 	return str(word.src)
 #test
-
+'''
 @app.route('/suggest-articles', methods=['GET', 'POST'])
 def get_ka():
 	if not request.json:
@@ -31,21 +31,18 @@ def get_ka():
 		return { "error": "field text not found. Expected string" }
 
 	doc = request.json['text']
-	k = []
+
 	lang = get_lang(doc)
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(doc), lang) # TODO : get language
-	for i in keywords:
-		if i[1]<=0.09:
-			k.append(i[0])
-	recommended_articles = search_on_wikipedia(k, lang)
+	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
-			"keywords": k,
+			"keywords": keywords,
 			"recommended_articles": recommended_articles
 		  }
 	return out
-
+'''
 
 @app.route('/ai-tips', methods=['GET', 'POST'])
 def aiTips():
@@ -78,6 +75,7 @@ def aiTips():
 		tmp = "https://" + lang + '.wikipedia.org/wiki/' + article
 		websites_url.append(tmp)
 
+	#print(scrapped_data["output"])
 	try:
 		k = []
 		get_first = recommended_articles[0]
@@ -89,11 +87,10 @@ def aiTips():
 			return {"error": "Website does not allow scrapping"}
 		keywords = word_extraction(str(output), lang)
 		for i in keywords:
-			if i[1]<=0.09:
-				k.append(i[0])
+			k.append(i[1])
 	except:
 		output = None
-		k = []
+		keywords = []
 		recommended_articles = []
 	#recommended_articles = search_on_wikipedia(keywords)
 
@@ -142,9 +139,8 @@ def summary():
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) # TODO : get language
 	for i in keywords:
-		if i[1]<=0.09:
-			k.append(i[0])
-	recommended_articles = search_on_wikipedia(k, lang)
+		k.append(i[1])
+	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
 			"output": output, 
@@ -178,9 +174,8 @@ def summarise_url():
 	wikipedia.set_lang(lang) 
 	keywords = word_extraction(str(output), lang) #TODO : get language
 	for i in keywords:
-		if i[1]<=0.09:
-			k.append(i[0])
-	recommended_articles = search_on_wikipedia(k, lang)
+		k.append(i[1])
+	recommended_articles = search_on_wikipedia(keywords, lang)
 
 	out = {
 			"output": output, 
