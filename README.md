@@ -3,9 +3,9 @@
 
 ## 💡 Introduction
 
-Researching and creating projects is tedious. Ency is a virtual assistant developed with the concept of automating research and organizing projects and assignments. Get access ENCY [here](https://ency.live/)! 
+Researching and creating projects is tedious. Ency is a virtual assistant developed with the concept of automating research and organizing projects and assignments. Get access ENCY [here](https://ency.live/)! (deprecated)
 
-This is the AI repository for Ency, [Link to the Web Repository](https://github.com/milan090/ency).
+This is the AI repository for Ency, [Link to the Web Repository](https://github.com/milan090/ency). (private)
 
 ## 🎨 Presentation
 
